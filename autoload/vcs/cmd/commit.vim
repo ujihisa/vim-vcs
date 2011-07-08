@@ -33,7 +33,7 @@ function! s:cmd.execute(type, ...)
   augroup plugin-vcs-cmd-commit
     autocmd! * <buffer>
     autocmd BufWriteCmd <buffer> setlocal nomodified
-    autocmd BufUnload <buffer> call b:vcs_commit.do_commit()
+    autocmd BufWinLeave <buffer> call b:vcs_commit.do_commit()
   augroup END
 
   silent % delete _
@@ -66,6 +66,7 @@ function! s:cmd.execute(type, ...)
 endfunction
 
 function! s:cmd.do_commit()
+  echomsg 'hello'
   let mes = split(substitute(matchstr(join(getline(1, '$'), "\n"),
   \               '^.\{-}\ze\%(\V' . escape(s:border, '\') . '\m.*\)\?$'),
   \               '^\s*\zs.\{-}\ze\s*$', '\0', ''), "\n")
