@@ -66,7 +66,6 @@ function! s:cmd.execute(type, ...)
 endfunction
 
 function! s:cmd.do_commit()
-  echomsg 'hello'
   let mes = split(substitute(matchstr(join(getline(1, '$'), "\n"),
   \               '^.\{-}\ze\%(\V' . escape(s:border, '\') . '\m.*\)\?$'),
   \               '^\s*\zs.\{-}\ze\s*$', '\0', ''), "\n")
