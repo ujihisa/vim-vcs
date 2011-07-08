@@ -74,8 +74,7 @@ endfunction
 
 function! s:type.runf(file, ...)
   let root = self.root(a:file != '' ? a:file : expand('%:p:h'))
-  let gitdir = '--git-dir=' . root . '/.git'
-  return self.run(gitdir, a:000)
+  return self.run(a:000)
 endfunction
 
 let s:status_char = {

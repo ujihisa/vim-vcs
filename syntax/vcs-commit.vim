@@ -12,7 +12,7 @@ syntax sync fromstart
 syntax include @vcsCommitDiff syntax/diff.vim
 syntax region vcsCommitIgnored start="^-\{3,}.\+-\{3,}$" end="^\%$" contains=vcsCommitDiff,vcsCommitBorder
 syntax region vcsCommitDiff start="^diff" end="^\%$" contained contains=@vcsCommitDiff
-syntax region vcsCommitBorder start="^-\{3,}.\+-\{3,}$" end="$"
+syntax region vcsCommitBorder start="^-\{3,}.\+-\{3,}$" end="$" contained
 
 highlight default link vcsCommitBorder Special
 
