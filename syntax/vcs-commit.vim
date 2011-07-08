@@ -13,6 +13,6 @@ syntax include @vcsCommitDiff syntax/diff.vim
 syntax region vcsCommitIgnored start="^-\{3,}.\+-\{3,}$" end="^\%$" matchgroup=vcsCommitBorder contains=vcsCommitDiff
 syntax region vcsCommitDiff start="^diff" end="^\%$" contained contains=@vcsCommitDiff
 
-highlight default link vcsCommentBorder Special
+highlight default link vcsCommitBorder Special
 
 let b:current_syntax = 'vcs-commit'
