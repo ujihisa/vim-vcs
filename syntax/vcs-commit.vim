@@ -10,10 +10,12 @@ endif
 syntax sync fromstart
 
 syntax include @vcsCommitDiff syntax/diff.vim
+syntax match vcsCommitSummary '\%1l.*$'
 syntax region vcsCommitIgnored start="^-\{3,}.\+-\{3,}$" end="^\%$" contains=vcsCommitDiff,vcsCommitBorder
 syntax region vcsCommitDiff start="^diff" end="^\%$" contained contains=@vcsCommitDiff
 syntax region vcsCommitBorder start="^-\{3,}.\+-\{3,}$" end="$" contained
 
 highlight default link vcsCommitBorder Special
+highlight default link vcsCommitSummary Statement
 
 let b:current_syntax = 'vcs-commit'
