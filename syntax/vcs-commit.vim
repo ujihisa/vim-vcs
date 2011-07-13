@@ -16,6 +16,6 @@ syntax region vcsCommitDiff start="^diff" end="^\%$" contained contains=@vcsComm
 syntax region vcsCommitBorder start="^-\{3,}.\+-\{3,}$" end="$" contained
 
 highlight default link vcsCommitBorder Special
-highlight default link vcsCommitSummary Statement
+highlight default link vcsCommitSummary Title
 
 let b:current_syntax = 'vcs-commit'
