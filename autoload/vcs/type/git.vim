@@ -124,6 +124,11 @@ function! s:get_status(self, files, is_unstaged)
 
   for i in split(res, "\n")
     let [x, y, file] = [i[0], i[1], i[3:]]
+    if !a:is_unstaged && x == '?'
+      " untracked files.
+      continue
+    endif
+
     let status[file] = a:is_unstaged ? y : x
   endfor
 
