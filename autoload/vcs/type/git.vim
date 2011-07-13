@@ -29,6 +29,24 @@ function! s:type.add(files)
   return self.run('add', a:files)
 endfunction
 
+function! s:type.rm(files)
+  return self.run('rm', a:files)
+endfunction
+
+function! s:type.get_current_branch()"{{{
+  let root = self.root(getcwd())
+  if root == '' || !filereadable(root . '/.git/HEAD')
+    return ''
+  endif
+
+  let lines = readfile(root . '/.git/HEAD')
+  if empty(l:lines)
+    return ''
+  else
+    return matchstr(lines[0], 'refs/heads/\zs.\+$')
+  endif
+endfunction"}}}
+
 function! s:type.cat(file, rev)
   " TODO: handle the error
   return self.runf(a:file, ['show', a:rev . ':' . a:file])
@@ -52,6 +70,10 @@ function! s:type.commit(info, ...)
   endif
   let res = self.run(args)
   return res
+endfunction
+
+function! s:type.reset(files)
+  return self.run('reset', 'HEAD', '--', a:files)
 endfunction
 
 function! s:type.diff(...)
@@ -87,25 +109,31 @@ let s:status_char = {
 \   '?': "unknown",
 \ }
 function! s:type.status(...)
-  let status = {}
   let files = a:0 ? a:1 : []
-  let base = empty(files) ? '' : files[0]
-  let res = self.runf(base, 'status', '--short', '--', files)
+  return s:get_status(self, files, 0)
+endfunction
+function! s:type.unstaged_status(...)
+  let files = a:0 ? a:1 : []
+  return s:get_status(self, files, 1)
+endfunction
+
+function! s:get_status(self, files, is_unstaged)
+  let status = {}
+  let base = empty(a:files) ? '' : a:files[0]
+  let res = a:self.runf(base, 'status', '--short', '--', a:files)
 
   for i in split(res, "\n")
     let [x, y, file] = [i[0], i[1], i[3:]]
-    " XXX: I have not confirmed the specification neatly yet.
-    let status[file] = x != ' ' ? x : y
+    let status[file] = a:is_unstaged ? y : x
   endfor
 
-  let ignored = self.runf(base, 'ls-files',
-  \                      '--exclude-standard', '-o', '-i', '--', files)
+  let ignored = a:self.runf(base, 'ls-files',
+        \                      '--exclude-standard', '-o', '-i', '--', a:files)
   for i in split(ignored, "\n")
     let status[i] = 'I'
   endfor
   return map(status, 'get(s:status_char, v:val, " ")')
 endfunction
-
 
 
 function! vcs#type#git#load()
